@@ -60,7 +60,6 @@ def process_metric(metric, value, tags = {}):
 def main():
     # Assume each config section is an enabled module
     for section in config.sections():
-        print(section)
         if section != 'default' and section != 'otsdb':
 
             mod = None
@@ -105,15 +104,11 @@ def main():
 if __name__ == '__main__':
     try:
         while True:
-            print('loop')
             # get start time
             before = time.time()
 
             # run the main junk
             main()
-
-            # clean up otsdb
-            db.wait()
 
             # get the time now
             after = time.time()
