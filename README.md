@@ -1,2 +1,3 @@
-# ms-opentsdb-collectors
+# orccollector
+
 Handy OpenTSDB collectors
