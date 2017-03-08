@@ -3,7 +3,7 @@
 
 import sys, os, time, configparser, potsdb, importlib
 from datetime import timedelta
-from core.utils import interval_regex, parse_time
+from orccollector.core.utils import interval_regex, parse_time
 
 home_config = "~/.orc.ini"
 sys_config = "/etc/orc.ini"
@@ -57,7 +57,7 @@ def process_metric(metric, value, tags = {}):
         print("orc-collector: Warning: Metric is either undefined or has no value.  Not sending to OpenTSDB.")
 
 """ Do the needful """
-def main():
+def collect():
     # Assume each config section is an enabled module
     for section in config.sections():
         if section != 'default' and section != 'otsdb':
@@ -67,7 +67,7 @@ def main():
             # Let's see if we can import it
             try:
 
-                mod = importlib.import_module(section)
+                mod = importlib.import_module('orccollector.' + section)
 
             except ImportError:
 
@@ -101,14 +101,14 @@ def main():
                 else:
                     print("orc-collector: Warning: Unable to import module %s" % section)
 
-if __name__ == '__main__':
+def main():
     try:
         while True:
             # get start time
             before = time.time()
 
             # run the main junk
-            main()
+            collect()
 
             # get the time now
             after = time.time()
@@ -119,4 +119,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         db.wait()
         sys.exit(0)
+
+if __name__ == '__main__':
+    main()
 
