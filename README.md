@@ -21,7 +21,7 @@ Make sure to add `/etc/orc.ini` or `~/.orc.ini` using the following as a sample:
     api_url     = http://localhost:3000
 
 Each module must have it's own section in the ini with its own 
-configuration.  See the "Modules" section for more information.
+configuration.  See the "[Modules](#modules)" section for more information.
 
 ## Install
 
@@ -46,7 +46,7 @@ Example configuration for supervisord.
 
 ## Modules
 
-At this point, there's only one module, and that's sensu.
+At this point, there's only one module, and that's [sensu](#sensu).
 
 ### Sensu
 
