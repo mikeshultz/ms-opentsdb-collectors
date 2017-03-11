@@ -70,6 +70,23 @@ charge.
     location_json = /path/to/weather_locations.json
     interval    = 30m
 
+#### Location JSON
+
+The location JSON file should be in a format like the following: 
+
+    [
+        { 
+            "name": "Philipsburg", 
+            "lat": 46.3298812, 
+            "lng": -113.3064933 
+        },
+        { 
+            "name": "Philadelphia", 
+            "lat": 40.0046684, 
+            "lng": -75.258115 
+        }
+    ]
+
 **NOTE**: Make sure to pay attention to the interval so you don't go 
 above the amount of API calls you intend.  24 hours has 1440 seconds in 
 it so a call per second will hit that limit.
