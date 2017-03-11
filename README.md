@@ -46,8 +46,6 @@ Example configuration for supervisord.
 
 ## Modules
 
-At this point, there's only one module, and that's [sensu](#sensu).
-
 ### Sensu
 
 The sensu module collects information on client health and puts it into 
@@ -58,3 +56,20 @@ in the `[sensu]` section in the ini file.
 
     [sensu]
     api_url     = http://localhost:3000
+
+### DarkSky
+
+[DarkSky](https://darksky.net/dev/) provides weather information via a 
+RESTful API.  You can make up to 1000 calls per day to their API at no 
+charge.
+
+#### Config 
+
+    [darksky]
+    api_key       = 0123456789abcdef
+    location_json = /path/to/weather_locations.json
+    interval    = 30m
+
+**NOTE**: Make sure to pay attention to the interval so you don't go 
+above the amount of API calls you intend.  24 hours has 1440 seconds in 
+it so a call per second will hit that limit.
