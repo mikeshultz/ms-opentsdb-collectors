@@ -22,7 +22,7 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     keywords = 'opentsdb monitoring metrics collector',
-    packages = find_packages(exclude = ['contrib', 'docs', 'tests']),
+    packages = find_packages(exclude = ['build', 'dist']),
     install_requires = open("requirements.txt").readlines(),
     entry_points={
         'console_scripts': [
