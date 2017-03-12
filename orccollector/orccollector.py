@@ -75,43 +75,43 @@ def collect():
 
                 print("orc-collector: Warning: %s is not a valid module." % section)
 
-            finally:
+            # If we did...
+            if mod:
 
-                # If we did...
-                if mod:
+                # If there's an interval setting for this module, 
+                # make sure we don't run it in a shorter time window
+                if config.get(section, 'interval', fallback=None):
+                    intv = parse_time(config.get(section, 'interval'))
+                    
+                    if last_checks.get(section):
+                        
+                        if (time.time() - last_checks[section]) < intv.total_seconds():
+                            continue
 
-                    # If there's an interval setting for this module, 
-                    # make sure we don't run it in a shorter time window
-                    if config.get(section, 'interval', fallback=None):
-                        intv = parse_time(config.get(section, 'interval'))
-                        if last_checks.get(section):
-                            if (time.time() - last_checks[section]) < intv.total_seconds():
-                                return
+                # Run it
+                module_data = []
+                module_data = mod.run(config[section])
 
-                    # Run it
-                    module_data = mod.run(config[section])
+                if type(module_data) == type([]):
 
-                    if type(module_data) == type([]):
-
-                        if len(module_data) > 0:
-                            for metric,value,tags in module_data:
-                                process_metric(metric, value, tags)
-                                last_checks[section] = time.time()
-                        else:
-                            print("orc-collector: Warning: Module returned no results")
-
-                    elif type(module_data) == type((None, None, None)):
-
-                        process_metric(module_data[0], module_data[1], module_data[2])
-                        last_checks[section] = time.time()
-
+                    if len(module_data) > 0:
+                        for metric,value,tags in module_data:
+                            process_metric(metric, value, tags)
+                            last_checks[section] = time.time()
                     else:
+                        print("orc-collector: Warning: Module returned no results")
 
-                        print("orc-collector: Warning: No idea what type of data the %s module is returning." % (section))
+                elif type(module_data) == type((None, None, None)):
+                    process_metric(module_data[0], module_data[1], module_data[2])
+                    last_checks[section] = time.time()
 
-                # hm
                 else:
-                    print("orc-collector: Warning: Unable to import module %s" % section)
+
+                    print("orc-collector: Warning: No idea what type of data the %s module is returning." % (section))
+
+            # hm
+            else:
+                print("orc-collector: Warning: Unable to import module %s" % section)
 
 def main():
     try:

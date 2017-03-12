@@ -10,24 +10,23 @@ import requests, json
 class DarkSkyMetrics:
     """ Get some data from DarkSky about weather """
 
-    key = ""
     root_url = "https://api.darksky.net"
-    latlongs = []
-    metrics = []
 
     def __init__(self, key, latlongs):
         self.key = key
         self.latlongs = latlongs
+        self.metrics = []
 
     def get_forecast(self, name, lat, lng):
         """ Get the forecast from DarkSky """
 
         qstring = "exclude=minutely,hourly"
-        req = requests.get(self.root_url + "/forecast/" + self.key + "/" + str(lat) + "," + str(lng) + "?" + qstring)
+        url = self.root_url + "/forecast/" + self.key + "/" + str(lat) + "," + str(lng) + "?" + qstring
+        req = requests.get(url)
 
         if req.status_code == 200:
             dat = req.json()
-            print(dat)
+
             # Current conditions
             if dat.get('currently'):
                 #self.metrics.append(('weather_summary', dat['currently']['summary'], { 'location': name, }))
@@ -50,6 +49,7 @@ class DarkSkyMetrics:
 
     def get_all(self):
         """ Get all forecasts """
+        
         for loc in self.latlongs:
             self.get_forecast(loc['name'], loc['lat'], loc['lng'])
 
@@ -62,7 +62,6 @@ def run(conf):
         return
 
     latlongs = []
-
     with open(conf['location_json']) as fil:
         location_json = json.load(fil)
         for loc in location_json:
