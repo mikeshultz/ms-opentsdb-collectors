@@ -27,16 +27,25 @@ class DarkSkyMetrics:
         if req.status_code == 200:
             dat = req.json()
 
+            current_conditions = dat.get('currently')
+
             # Current conditions
-            if dat.get('currently'):
+            if current_conditions:
                 #self.metrics.append(('weather_summary', dat['currently']['summary'], { 'location': name, }))
-                self.metrics.append(('weather_nearestStormDistance', dat['currently']['nearestStormDistance'], { 'location': name, }))
-                self.metrics.append(('weather_precipProbability', dat['currently']['precipProbability'], { 'location': name, }))
-                self.metrics.append(('weather_temperature', dat['currently']['temperature'], { 'location': name, }))
-                self.metrics.append(('weather_humidity', dat['currently']['humidity'], { 'location': name, }))
-                self.metrics.append(('weather_windSpeed', dat['currently']['windSpeed'], { 'location': name, }))
-                self.metrics.append(('weather_windBearing', dat['currently']['windBearing'], { 'location': name, }))
-                self.metrics.append(('weather_pressure', dat['currently']['pressure'], { 'location': name, }))
+                if current_conditions.get('nearestStormDistance'):
+                    self.metrics.append(('weather_nearestStormDistance', current_conditions['nearestStormDistance'], { 'location': name, }))
+                if current_conditions.get('precipProbability'):
+                    self.metrics.append(('weather_precipProbability', current_conditions['precipProbability'], { 'location': name, }))
+                if current_conditions.get('temperature'):
+                    self.metrics.append(('weather_temperature', current_conditions['temperature'], { 'location': name, }))
+                if current_conditions.get('humidity'):
+                    self.metrics.append(('weather_humidity', current_conditions['humidity'], { 'location': name, }))
+                if current_conditions.get('windSpeed'):
+                    self.metrics.append(('weather_windSpeed', current_conditions['windSpeed'], { 'location': name, }))
+                if current_conditions.get('windBearing'):
+                    self.metrics.append(('weather_windBearing', current_conditions['windBearing'], { 'location': name, }))
+                if current_conditions.get('pressure'):
+                    self.metrics.append(('weather_pressure', current_conditions['pressure'], { 'location': name, }))
 
             # Get weather alerts
             # TODO: Support multiple alerts.  Is that even doable?
