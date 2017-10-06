@@ -19,7 +19,7 @@ class SensuMetrics:
         except requests.exceptions.ConnectionError as e:
             req = None
             print(str(e), file=sys.stderr)
-        except as e:
+        except Exception as e:
             print("Unknown error making a request to the Sensu API", file=sys.stderr)
             print(str(e), file=sys.stderr)
 

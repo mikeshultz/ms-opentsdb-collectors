@@ -5,7 +5,7 @@ __DIR__ = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name = 'orccollector',
-    version = '0.1.1',
+    version = '0.1.2',
     description = 'Handy OpenTSDB collectors',
     url = 'https://github.com/mikeshultz/opentsdb-remote-collectors',
     author = 'Mike Shultz',
