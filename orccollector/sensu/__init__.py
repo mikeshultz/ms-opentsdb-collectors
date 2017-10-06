@@ -30,7 +30,7 @@ class SensuMetrics:
         if len(self.metrics) > 0:
             return self.metrics
         else:
-            return None
+            return []
 
 def run(conf):
     """ Process sensu metrics """
