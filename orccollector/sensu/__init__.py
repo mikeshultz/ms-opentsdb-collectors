@@ -14,9 +14,16 @@ class SensuMetrics:
     def clients(self):
         """ Get all basic hosts metrics """
 
-        req = requests.get(self.root_url + "/clients")
+        try:
+            req = requests.get(self.root_url + "/clients")
+        except requests.exceptions.ConnectionError as e:
+            req = None
+            print(str(e), file=sys.stderr)
+        except as e:
+            print("Unknown error making a request to the Sensu API", file=sys.stderr)
+            print(str(e), file=sys.stderr)
 
-        if req.status_code == 200:
+        if req and req.status_code == 200:
             dat = req.json()
             for host in dat:
                 self.metrics.append(('sensu_status', host['status'], {'host': host['name'], 'dc': host['dc']}))
